@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All SaaS Boilerplates</title>
+
+  <!-- jQuery library -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <!-- AG-Grid CSS and JS -->
+  <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-grid.css" />
+  <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css" />
+  <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#10293f',
+            secondary: '#C34129',
+            accent: '#EFB758',
+            background: '#E2DBC9'
+          }
+        }
+
+      }
+    }
+  </script>
+  <style>
+    .tag {
+      padding: 0.25rem 0.5rem;
+      margin: 2px;
+      background-color: blue;
+      border-radius: 0.375rem;
+      font-size: 0.9em;
+    }
+
+    .tag-color-1 {
+      background-color: #67e8f9;
+    }
+
+    .tag-color-2 {
+      background-color: #a5b4fc;
+    }
+
+    .tag-color-3 {
+      background-color: #f0abfc;
+    }
+
+    .tag-color-4 {
+      background-color: #fca5a5;
+    }
+
+    .tag-color-5 {
+      background-color: #fde047;
+    }
+
+    .tag-color-6 {
+      background-color: #6ee7b7;
+    }
+
+    .tag-color-7 {
+      background-color: #38bdf8;
+    }
+
+    .tag-color-8 {
+      background-color: #a78bfa;
+    }
+
+    .tag-color-9 {
+      background-color: #f472b6;
+    }
+
+    .tag-color-10 {
+      background-color: #fb923c;
+    }
+
+    .tag-color-11 {
+      background-color: #a3e635;
+    }
+
+    .tag-color-12 {
+      background-color: #2dd4bf;
+    }
+
+    .tag-color-13 {
+      background-color: #60a5fa;
+    }
+
+    .tag-color-14 {
+      background-color: #e9d5ff;
+    }
+
+    .tag-color-15 {
+      background-color: #fecdd3;
+    }
+
+    .tag-color-16 {
+      background-color: #fde68a;
+    }
+
+    .tag-color-17 {
+      background-color: #bbf7d0;
+    }
+
+    .tag-color-18 {
+      background-color: #a5f3fc;
+    }
+
+    .tag-color-19 {
+      background-color: #c7d2fe;
+    }
+
+    .tag-color-20 {
+      background-color: #f5d0fe;
+    }
+  </style>
+</head>
+
+<body class="bg-accent">
+  <div class="2xl:container 2xl:mx-auto px-4">
+
+    <div>
+      <div class="relative isolate px-6 lg:px-8">
+        <div class="mx-auto max-w-2xl py-16 sm:py-24 lg:py-28">
+          <div class="text-center">
+            <h1 class="text-4xl font-bold tracking-tight text-primary sm:text-6xl">All SaaS Boilerplates
+            </h1>
+            <p class="mt-6 text-lg leading-8 text-primary">An list of all SaaS boilerplates and starter kits for your
+              next indie project, startup, or side hustle.</p>
+            <div class="mt-10 flex items-center justify-center gap-x-6">
+              <a href="#"
+                class="rounded-md bg-primary px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Get
+                started</a>
+              <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Learn more <span
+                  aria-hidden="true">→</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Using a div for AG-Grid instead of a table -->
+    <div id="airtableData" class="ag-theme-alpine" style="width: 100%; height: 600px;"></div>
+
+  </div>
+
+  <script>
+    const API_KEY = 'patcG13hw3g4boXzW.db53b2f071922d6c7e2c3bb8286fda9d144097a64ba9977fc63bd0f8f32141de';
+    const BASE_ID = 'appmPSnmVQ7xOakZe';
+    const TABLE_NAME = 'SaaS Boilerplates';
+
+    const DATA_ENDPOINT = `https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(TABLE_NAME)}`;
+    const METADATA_ENDPOINT = `https://api.airtable.com/v0/meta/bases/${BASE_ID}/tables`;
+
+    let columnDefs = [];
+
+    let gridOptions = {};
+
+    function onFirstDataRendered(event) {
+      const allColumnIds = [];
+      gridOptions.columnApi.getAllColumns().forEach((column) => {
+        allColumnIds.push(column.colId);
+      });
+      gridOptions.columnApi.autoSizeColumns(allColumnIds);
+    }
+
+
+    // A function to generate color based on tag string.
+    const getColorForTag = (tag) => {
+      const tagColors = [
+        'tag-color-1', 'tag-color-2', 'tag-color-3', 'tag-color-4', 'tag-color-5',
+        'tag-color-6', 'tag-color-7', 'tag-color-8', 'tag-color-9', 'tag-color-10',
+        'tag-color-11', 'tag-color-12', 'tag-color-13', 'tag-color-14', 'tag-color-15',
+        'tag-color-16', 'tag-color-17', 'tag-color-18', 'tag-color-19', 'tag-color-20'
+      ];
+      let hash = 0;
+      for (let i = 0; i < tag.length; i++) {
+        hash = tag.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      const index = Math.abs(hash % tagColors.length);
+      return tagColors[index];
+    };
+
+    const tagRenderer = function (params) {
+      const value = params.value;
+      if (typeof value === 'string') {
+        const tags = value.split(', ');
+        return tags.map(tag => `<span class="tag ${getColorForTag(tag)}">${tag}</span>`).join(' ');
+      } else if (Array.isArray(value)) {
+        return value.map(tag => `<span class="tag ${getColorForTag(tag)}">${tag}</span>`).join(' ');
+      }
+      return '';
+    };
+
+    const currencyRenderer = function (params) {
+      if (typeof params.value === 'number') {
+
+        // return "0" if the value is 0
+        if (params.value === 0) {
+          return "$0";
+        }
+
+        // You can adjust the toLocaleString parameters based on your requirements.
+        return "$" + params.value.toLocaleString('en-US', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        });
+      }
+      return params.value;  // Return original value if it's not a number.
+    };
+
+    function autoSizeAll(skipHeader) {
+      const allColumnIds = [];
+      gridOptions.columnApi.getColumns().forEach((column) => {
+        allColumnIds.push(column.getId());
+      });
+
+      gridOptions.columnApi.autoSizeColumns(allColumnIds, skipHeader);
+    };
+
+
+
+    // Fetch all table schemas first
+    $.ajax({
+      url: METADATA_ENDPOINT,
+      headers: {
+        'Authorization': `Bearer ${API_KEY}`
+      },
+      success: function (metadataResponse) {
+        let tableMetadata = metadataResponse.tables.find(table => table.name === TABLE_NAME);
+
+        if (tableMetadata) {
+          columnDefs = tableMetadata.fields.map((field, index) => {
+            let cellDef = {
+              headerName: field.name,
+              field: `fields.${field.name}`,
+              sortable: true,
+              filter: true,
+              floatingFilter: true
+            };
+
+            if (field.name === "Website") {
+              cellDef.hide = true;
+            } else if (field.type === "multipleSelects" || field.type === "singleSelect") {
+              cellDef.cellRenderer = tagRenderer;
+            } else if (field.name === "Name") {
+              cellDef.cellRenderer = function (params) {
+                const websiteUrl = params.data.fields.Website;
+                const nameValue = params.value;
+                if (nameValue && websiteUrl) {
+                  return `<a href="${websiteUrl}" target="_blank">${nameValue}</a>`;
+                } else {
+                  return nameValue || '';
+                }
+              };
+            } else if (field.type === "currency") {
+              cellDef.cellRenderer = currencyRenderer;  // <-- Add this line.
+            }
+
+            // Pin the first column
+            if (index === 0) {
+              cellDef.pinned = "left";
+            }
+
+            return cellDef;
+          });
+
+          // Fetch the table data
+          $.ajax({
+            url: DATA_ENDPOINT,
+            headers: {
+              'Authorization': `Bearer ${API_KEY}`
+            },
+            success: function (dataResponse) {
+              // Define gridOptions here
+              gridOptions = {
+                columnDefs: columnDefs,
+                rowData: dataResponse.records,
+                domLayout: 'autoHeight',
+                onFirstDataRendered: onFirstDataRendered
+              };
+              // Initialize AG-Grid
+              new agGrid.Grid(document.getElementById('airtableData'), gridOptions);
+            }
+          });
+        } else {
+          console.error('Could not find the specified table in metadata.');
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>

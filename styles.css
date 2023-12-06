@@ -1,0 +1,55 @@
+/* styles.css */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f2f2f2;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 1em 5%;
+    background-color: white;
+}
+
+#logo {
+    font-size: 1.5em;
+}
+
+nav a {
+    margin-left: 15px;
+    text-decoration: none;
+    color: black;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: #f68060; /* Just an example color */
+}
+
+.btn {
+    background-color: #f68060; /* Just an example color */
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+#intro {
+    padding: 5%;
+    background-color: #ffedc7;
+}
+
+#intro h1 {
+    font-size: 2.5em;
+}
+
+#intro span {
+    color: #f68060; /* Just an example color */
+}
+
+#countdown {
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+    margin-top: 2em;
+}
